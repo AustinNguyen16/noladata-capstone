@@ -1,12 +1,13 @@
 #Imports
 import dash
-from dash import dcc, html
+from dash import dcc, html, dash_table
 import plotly.express as px
 import pandas as pd
 
 
 # Test with 311 2012-Present 
 data = pd.read_csv('311 2012-Present.csv')
+#print(data.columns)
 
 # Create a Dash web application
 app = dash.Dash(__name__)
@@ -15,7 +16,9 @@ app = dash.Dash(__name__)
 new_orleans_coordinates = {'lat': 29.9511, 'lon': -90.0715}
 
 # Layout of the Dash app
-app.layout = html.Div([
+app.layout = html.Div(children=[
+
+
     # Map component using dcc.Graph
     dcc.Graph(
         #Set id
@@ -36,11 +39,25 @@ app.layout = html.Div([
 
             #Title of data set being used
             title='311 Data 2012-Present',
+            zoom = 10
+            #Hover Options
+            
 
 
         )
+    ),
+
+    #Table Component
+    dash_table.DataTable(
+        id='example-table',
+        columns=[{'name': col, 'id': col} for col in data.columns],  # Define columns for the table
+        data=data.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
+        style_table={'width': '80%', 'margin': 'auto', 'marginTop': '20px'}  # Style for the table
+
     )
-])
+
+
+], style={'width': '50%', 'margin': '300px', 'marginTop': '50px', 'textAlign': 'center'})
 
 # Run the app
 if __name__ == '__main__':
