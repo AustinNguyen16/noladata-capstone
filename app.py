@@ -10,7 +10,7 @@ data = pd.read_csv('311 2012-Present.csv')
 #print(data.columns)
 
 # Create a Dash web application
-app = dash.Dash(__name__, server=Flask(__name__))
+app = dash.Dash(__name__)
 
 
 #Coordinates of New Orleans to center map
@@ -69,4 +69,4 @@ app.layout = html.Div(children=[
 
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8050)
+    app.run_server(debug=True)
