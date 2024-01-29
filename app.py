@@ -61,7 +61,10 @@ app.layout = html.Div(children=[
             columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
             data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
             #style_table={'width': '1%', 'margin': '300px', 'marginTop': '20px'}  # Style for the table
-            style_table={'width': '10%', 'marginTop': '10px' }
+            style_table={'width': '10%', 'marginTop': '10px' },
+
+            
+            filter_action = 'native', #This sets data filter to native dash type, which is a typed filter system, not menu type which may be desirable
     ),
     style={'position': 'relative', 'width': '10%', 'height': '50vh'}
     )
