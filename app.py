@@ -1,6 +1,6 @@
 #Imports
 import dash
-from dash import dcc, html, dash_table
+from dash import dcc, html, dash_table, Input, Output, callback
 import plotly.express as px
 import pandas as pd
 
@@ -17,8 +17,8 @@ app = dash.Dash(__name__)
 new_orleans_coordinates = {'lat': 29.9511, 'lon': -90.0715}
 
 #Columns to drop for table display
-columns_to_drop = ['responsible_agency', 'longitude', 'latitude', 'geocoded_column']
-data_display = data.drop(columns=columns_to_drop).head()
+columns_to_drop = ['responsible_agency', 'geocoded_column']
+data_display = data.drop(columns=columns_to_drop)
 
 # Layout of the Dash app
 app.layout = html.Div(children=[
@@ -65,11 +65,26 @@ app.layout = html.Div(children=[
 
             
             filter_action = 'native', #This sets data filter to native dash type, which is a typed filter system, not menu type which may be desirable
+                                      #Also need to specify type to enable gt, lt, eq comparison for numeric types
     ),
     style={'position': 'relative', 'width': '10%', 'height': '50vh'}
     )
 ], )
 
+#Callbacks - these make the Dash app interactive by updating Outputs when Inputs change
+
+#Table to Map - change in filters on table change values displayed on map
+@callback(
+    Output(component_id='new-orleans-map', component_property='figure'),
+    Input(component_id='example-table' , component_property='data')
+)
+def update_map(filtered_data):
+    df_filtered = pd.DataFrame(filtered_data)
+
+    updated_fig = px.scatter_mapbox(df_filtered, lat='latitude', lon='longitude')
+    
+    return updated_fig
+
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True) 
