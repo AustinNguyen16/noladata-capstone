@@ -102,7 +102,7 @@ def update_map(filtered_data):
 )
 
 def test_callback(filtered_data):
-   return "TEST TEST MOTHAFUCKA"
+   return "TEST TEST 12341234"
 
 
 
