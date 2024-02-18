@@ -1,6 +1,6 @@
 #Imports
 import dash
-from dash import dcc, html, dash_table, Input, Output, callback
+from dash import dcc, html, dash_table, Input, Output, State, callback
 import plotly.express as px
 import pandas as pd
 
@@ -75,34 +75,10 @@ app.layout = html.Div(children=[
 ], )
 
 #Callbacks - these make the Dash app interactive by updating Outputs when Inputs change
-'''
-#Table to Map - change in filters on table change values displayed on map
-@callback(
-    Output(component_id='new-orleans-map', component_property='figure'),
-    Input(component_id='example-table' , component_property='data')
-)
-def update_map(filtered_data):
-    #px.set_mapbox_access_token()
-    df_filtered = pd.DataFrame(filtered_data)
 
-    updated_fig = px.scatter_geo(
-        df_filtered,
-        lat= "latitude",
-        lon= "longitude",
-        mapbox_style='carto-positron',
-        zoom = 10
-    )
-    return updated_fig'''
 
-#Attempt #2 of this callback: 
-@callback(
-    Output(component_id='test-output', component_property='children'),
-    Input(component_id='example-table', component_property='data')
+#Attempt #3 of this callback: 
 
-)
-
-def test_callback(filtered_data):
-   return "TEST TEST 12341234"
 
 
 
