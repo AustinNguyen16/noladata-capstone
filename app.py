@@ -3,10 +3,53 @@ import dash
 from dash import dcc, html, dash_table, Input, Output, State, callback
 import plotly.express as px
 import pandas as pd
+import mysql.connector
 
+
+#Database connection
+
+import mysql.connector 
+host = "sql5.freesqldatabase.com" 
+user = "sql5680691" 
+password = "g4fgFKv83C" 
+database = "sql5680691" 
+port = 3306 
+connection = mysql.connector.connect(
+                                    host=host,     
+                                    user=user,     
+                                    password=password,     
+                                    database=database,     
+                                    port=port ) 
+
+mycursor = connection.cursor()
+#mycursor.execute("SELECT * FROM df_blight3")
+
+#Read table from mysql database
+#data = pd.read_sql_query
+
+#Put database read in try/except block for safety
+
+try:
+    mycursor.execute("SELECT * FROM df_blight3")
+    rows = mycursor.fetchall()
+    columns = [desc[0] for desc in mycursor.description]
+
+    df = pd.DataFrame(rows, columns=columns)
+    
+
+except:
+    print("Error loading data")
+else:
+    print("Data loaded successfully into dataframe")
+finally:
+    print("End of try/except")
+
+#Set data to our df 
+data = df
+    
 
 # Test with 311 2012-Present 
-data = pd.read_csv('311 2012-Present.csv')
+#data = pd.read_csv('311 2012-Present.csv')
 #print(data.columns)
 
 # Create a Dash web application
@@ -17,7 +60,7 @@ app = dash.Dash(__name__)
 new_orleans_coordinates = {'lat': 29.9511, 'lon': -90.0715}
 
 #Columns to drop for table display
-columns_to_drop = ['responsible_agency', 'geocoded_column']
+columns_to_drop = ['geocoded_column']
 data_display = data.drop(columns=columns_to_drop)
 
 # Layout of the Dash app
@@ -30,7 +73,7 @@ app.layout = html.Div(children=[
         #Set id
             id='new-orleans-map',
             figure=px.scatter_mapbox(
-                #Use 311 Data
+                #Use df from database
                 data,
                 #Use Lat/Long in Data
                 lat = 'latitude',
