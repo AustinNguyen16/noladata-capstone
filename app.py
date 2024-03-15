@@ -8,12 +8,17 @@ import mysql.connector
 
 #Database connection
 
-import mysql.connector 
 host = "sql5.freesqldatabase.com" 
 user = "sql5680691" 
 password = "g4fgFKv83C" 
 database = "sql5680691" 
 port = 3306 
+'''host = "jtmcdermott9.mysql.pythonanywhere-services.com"
+user = "jtmcdermott9"
+password = "Ihatemysql123"
+database = "jtmcdermott9$capstone"
+port = 3306'''
+
 connection = mysql.connector.connect(
                                     host=host,     
                                     user=user,     
@@ -47,10 +52,6 @@ finally:
 #Set data to our df 
 data = df
     
-
-# Test with 311 2012-Present 
-#data = pd.read_csv('311 2012-Present.csv')
-#print(data.columns)
 
 # Create a Dash web application
 app = dash.Dash(__name__)
@@ -87,7 +88,7 @@ app.layout = html.Div(children=[
                 center = new_orleans_coordinates,
 
                 #Title of data set being used
-                title='311 Code Enforcement Data 2012-Present',
+                title='New Orleans Blighted Properties',
                 zoom = 10
                 #Hover Options
             
@@ -100,7 +101,7 @@ app.layout = html.Div(children=[
     #Table Component
     html.Div(
         dash_table.DataTable(
-            id='311-table',
+            id='nola-blight-table',
             columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
             data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
             #style_table={'width': '1%', 'margin': '300px', 'marginTop': '20px'}  # Style for the table
@@ -122,7 +123,7 @@ app.layout = html.Div(children=[
 
 #Map -> Table - this actually works!!
 @callback(
-        Output('311-table', 'data'),
+        Output('nola-blight-table', 'data'),
         Input('new-orleans-map', 'selectedData')
 )
 def update_table(selectedData):
@@ -138,8 +139,8 @@ def update_table(selectedData):
 #Table -> Map 
 @callback(
     Output('new-orleans-map', 'figure'),
-    Input('311-table', 'filter_query'),
-    #State('311-table', 'data')
+    Input('nola-blight-table', 'filter_query'),
+    #State('nola-blight-table', 'data')
 )
 
 def update_map(filter_query):
