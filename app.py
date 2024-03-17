@@ -99,24 +99,32 @@ app.layout = html.Div(children=[
     ),
 
     #Table Component
-    html.Div(
+ 
+
+html.Div(
+    children=[
+        html.Button(
+            'Columns in this Dataset',
+            id="column-explain-menu",
+        ), #end button
         dash_table.DataTable(
             id='nola-blight-table',
             columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
             data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
-            #style_table={'width': '1%', 'margin': '300px', 'marginTop': '20px'}  # Style for the table
-            style_table={'width': '10%', 'marginTop': '10px' },
-
-            
-            filter_action = 'native', #This sets data filter to native dash type, which is a typed filter system, not menu type which may be desirable
-                                      #Also need to specify type to enable gt, lt, eq comparison for numeric types
-            filter_query= ''
-    ),
-    style={'position': 'relative', 'width': '10%', 'height': '50vh'}
-    ),
-
-    html.Div(id="test-output")
-
+            style_table={'width': '10%', 'marginTop': '10px'},  # Style for the table
+            filter_action='native',  # Set data filter to native dash type
+            filter_query=''  # Initial filter query
+        ), #end table
+        
+    ],
+    style={'position': 'relative', 
+           'width': '10%', 
+           'height': '50vh',
+           'textAlign': 'center'}
+)
+    #Column Name Explanation Menu
+  
+    
 ], )
 
 #Callbacks - these make the Dash app interactive by updating Outputs when Inputs change
@@ -158,7 +166,8 @@ def update_map(filter_query):
 
     return figure
 
-    
+#Column Explain Menu callback
+
 
 
 # Run the app
