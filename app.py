@@ -108,6 +108,10 @@ html.Div(
             id="column-explain-menu",
         ), #end button
 
+        #Div for explanation callback
+        html.Div(id='explanation-div'), #end explanation div
+
+        #table component
         dash_table.DataTable(
             id='nola-blight-table',
             columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
@@ -168,11 +172,21 @@ def update_map(filter_query):
     return figure
 
 #Column Explain Menu callback
-'''@Callback(
-    Output(),
-    Input()
-)'''
+@callback(
+    Output('explanation-div', 'children'),
+    Input('column-explain-menu', 'n_clicks')
+)
 
+def explain_button(n_clicks):
+    #Only show div every other (odd) click for toggle effect
+    if  n_clicks is None:
+        return ''
+    elif (n_clicks % 2 == 0):
+        return ''
+    else:
+        return html.Div([
+            html.H6('Column Explanations:'),
+        ])
 
 # Run the app
 if __name__ == '__main__':
