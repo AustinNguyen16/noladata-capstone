@@ -6,13 +6,15 @@ import pandas as pd
 import mysql.connector
 
 
-#Database connection
+#Database connection for local editing
 
 host = "sql5.freesqldatabase.com" 
 user = "sql5680691" 
 password = "g4fgFKv83C" 
 database = "sql5680691" 
 port = 3306 
+
+#Database connection for production
 '''host = "jtmcdermott9.mysql.pythonanywhere-services.com"
 user = "jtmcdermott9"
 password = "Ihatemysql123"
@@ -27,10 +29,7 @@ connection = mysql.connector.connect(
                                     port=port ) 
 
 mycursor = connection.cursor()
-#mycursor.execute("SELECT * FROM df_blight3")
 
-#Read table from mysql database
-#data = pd.read_sql_query
 
 #Put database read in try/except block for safety
 
@@ -49,14 +48,14 @@ else:
 finally:
     print("End of try/except")
 
-#Set data to our df 
+#Set data to our df from server
 data = df
     
 
 # Create a Dash web application
 app = dash.Dash(__name__)
 
-
+#Global Vars
 #Coordinates of New Orleans to center map
 new_orleans_coordinates = {'lat': 29.9511, 'lon': -90.0715}
 
@@ -95,18 +94,20 @@ app.layout = html.Div(children=[
 
 
         ),
-        style={'width': '100%', 'margin': '10px', 'marginTop': '50px', 'marginBottom':'10px', 'textAlign': 'center'})
-    ),
+        style={'width': '100%', 'margin': '10px', 'marginTop': '50px', 'marginBottom':'10px', 'textAlign': 'center'}) #end graph
+    ), #end graph div
 
     #Table Component
  
 
 html.Div(
     children=[
+        #Column Name Explanation Menu
         html.Button(
             'Columns in this Dataset',
             id="column-explain-menu",
         ), #end button
+
         dash_table.DataTable(
             id='nola-blight-table',
             columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
@@ -121,11 +122,11 @@ html.Div(
            'width': '10%', 
            'height': '50vh',
            'textAlign': 'center'}
-)
-    #Column Name Explanation Menu
+        )#end table and explain button div
+    
   
     
-], )
+], )#end of layout div
 
 #Callbacks - these make the Dash app interactive by updating Outputs when Inputs change
 
@@ -167,7 +168,10 @@ def update_map(filter_query):
     return figure
 
 #Column Explain Menu callback
-
+'''@Callback(
+    Output(),
+    Input()
+)'''
 
 
 # Run the app
