@@ -48,9 +48,21 @@ else:
 finally:
     print("End of try/except")
 
+
+#Reorder column names
+data_cols = ['final_address',
+             'request_status',
+             'objectid',
+             'casefiled',
+             'o_c',
+             'latitude',
+             'longitude']
+
+
 #Set data to our df from server
-data = df
-    
+data = df[data_cols]
+
+
 
 # Create a Dash web application
 app = dash.Dash(__name__)
@@ -60,8 +72,8 @@ app = dash.Dash(__name__)
 new_orleans_coordinates = {'lat': 29.9511, 'lon': -90.0715}
 
 #Columns to drop for table display
-columns_to_drop = ['geocoded_column']
-data_display = data.drop(columns=columns_to_drop)
+columns_to_drop = ['geocoded_column', 'geoaddress']
+data_display = data #.drop(columns=columns_to_drop)
 
 # Layout of the Dash app
 app.layout = html.Div(children=[
@@ -185,7 +197,16 @@ def explain_button(n_clicks):
         return ''
     else:
         return html.Div([
-            html.H6('Column Explanations:'),
+            html.H4('Column Explanations:'), #Specify these later
+            html.Ul([
+                html.Li('final_address: the address of the property'),
+                html.Li('request_status: the 311 request status of the property'),
+                html.Li('object_id: (INSERT DEFINITION)'),
+                html.Li('casefiled: the case number for the property'),
+                html.Li('o_c: Open/Closed'),
+                html.Li('latitude: the latitude of the property'),
+                html.Li('longitude: the longitude of the property')
+            ])
         ])
 
 # Run the app
