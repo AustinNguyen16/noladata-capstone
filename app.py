@@ -121,7 +121,11 @@ html.Div(
         ), #end button
 
         #Div for explanation callback
-        html.Div(id='explanation-div'), #end explanation div
+        html.Div(id='explanation-div',
+                 style={'display': 'flex', 'flexDirection': 'row', 
+                        'flexWrap': 'wrap',
+                        'justifyContent': 'space-between', 'alignItems': 'center',
+                        'width': '50%'}), #end explanation div
 
         #table component
         dash_table.DataTable(
@@ -137,7 +141,9 @@ html.Div(
     style={'position': 'relative', 
            'width': '10%', 
            'height': '50vh',
-           'textAlign': 'center'}
+           'textAlign': 'center',
+           'display': 'flex',  # Ensures children are displayed as flex items
+            'flexDirection': 'column'}  # Ensures children are laid out vertically
         )#end table and explain button div
     
   
