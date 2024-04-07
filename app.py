@@ -114,18 +114,7 @@ app.layout = html.Div(children=[
 
 html.Div(
     children=[
-        #Column Name Explanation Menu
-        html.Button(
-            'Columns in this Dataset',
-            id="column-explain-menu",
-        ), #end button
-
-        #Div for explanation callback
-        html.Div(id='explanation-div',
-                 style={'display': 'flex', 'flexDirection': 'row', 
-                        'flexWrap': 'wrap',
-                        'justifyContent': 'space-between', 'alignItems': 'center',
-                        'width': '50%'}), #end explanation div
+      
 
         #table component
         dash_table.DataTable(
@@ -134,7 +123,19 @@ html.Div(
             data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
             style_table={'width': '10%', 'marginTop': '10px'},  # Style for the table
             filter_action='native',  # Set data filter to native dash type
-            filter_query=''  # Initial filter query
+            filter_query='',  # Initial filter query
+
+            #tooltip specs
+            tooltip_header={
+            "final_address": "The address of the property",
+            "request_status": "[INSERT]",
+            "objectid": "[INSERT]",
+            "casefiled": "[INSERT]",
+            "o_c": "Whether the case is open or closed",
+            "latitude": "the latitude coordinate of the property",
+            "longitude": "the longitude coordinate of the property"
+        },
+        tooltip_duration=None
         ), #end table
         
     ],
@@ -189,31 +190,7 @@ def update_map(filter_query):
 
     return figure
 
-#Column Explain Menu callback
-@callback(
-    Output('explanation-div', 'children'),
-    Input('column-explain-menu', 'n_clicks')
-)
 
-def explain_button(n_clicks):
-    #Only show div every other (odd) click for toggle effect
-    if  n_clicks is None:
-        return ''
-    elif (n_clicks % 2 == 0):
-        return ''
-    else:
-        return html.Div([
-            html.H4('Column Explanations:'), #Specify these later
-            html.Ul([
-                html.Li('final_address: the address of the property'),
-                html.Li('request_status: the 311 request status of the property'),
-                html.Li('object_id: (INSERT DEFINITION)'),
-                html.Li('casefiled: the case number for the property'),
-                html.Li('o_c: Open/Closed'),
-                html.Li('latitude: the latitude of the property'),
-                html.Li('longitude: the longitude of the property')
-            ])
-        ])
 
 # Run the app
 if __name__ == '__main__':
