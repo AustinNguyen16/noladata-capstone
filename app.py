@@ -106,47 +106,64 @@ app.layout = html.Div(children=[
 
 
         ),
-        style={'width': '100%', 'margin': '10px', 'marginTop': '50px', 'marginBottom':'10px', 'textAlign': 'center'}) #end graph
+        style={'width': '100%', 
+               'margin': '10px', 
+               'marginTop': '0px', 
+               'marginBottom':'0px', 
+               'textAlign': 'center',
+               'padding-bottom': '0px'
+               }) #end graph
     ), #end graph div
 
     #Table Component
  
 
-html.Div(
-    children=[
+
+
+    #Create container div for table to place it inside of a scroll window
+    html.Div(
+        style={'textAlign': 'center', 'left': '60%'},  # Center align content inside this div
+        children=[
+            html.Div(
+                          
+                children=[
       
 
-        #table component
-        dash_table.DataTable(
-            id='nola-blight-table',
-            columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
-            data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
-            style_table={'width': '10%', 'marginTop': '10px'},  # Style for the table
-            filter_action='native',  # Set data filter to native dash type
-            filter_query='',  # Initial filter query
+                    #table component
+                    dash_table.DataTable(
+                        id='nola-blight-table',
+                        columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
+                        data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
+                        style_table={'width': '10%', 'marginTop': '10px'},  # Style for the table
+                        filter_action='native',  # Set data filter to native dash type
+                        filter_query='',  # Initial filter query
 
-            #tooltip specs
-            tooltip_header={
-            "final_address": "The address of the property",
-            "request_status": "311 request status of property",
-            "objectid": "[INSERT]",
-            "casefiled": "[INSERT]",
-            "o_c": "Whether the case is open or closed",
-            "latitude": "the latitude coordinate of the property",
-            "longitude": "the longitude coordinate of the property"
-        },
-        tooltip_duration=None
+                        #tooltip specs
+                        tooltip_header={
+                        "final_address": "The address of the property",
+                        "request_status": "311 request status of property",
+                        "objectid": "[INSERT]",
+                        "casefiled": "[INSERT]",
+                        "o_c": "Whether the case is open or closed",
+                        "latitude": "the latitude coordinate of the property",
+                        "longitude": "the longitude coordinate of the property"
+                    },
+                    tooltip_duration=None
         ), #end table
         
     ],
     style={'position': 'relative', 
-           'width': '10%', 
+           'width': '60%', 
            'height': '50vh',
            'textAlign': 'center',
            'display': 'flex',  # Ensures children are displayed as flex items
             'flexDirection': 'column',
-            'left': '25%'}  #This moves the table to the center 
+            'left': '0%', #This moves the table to the center
+            'display': 'inline-block', 'maxHeight': '250px', 'overflowY': 'scroll', 'paddingLeft': '20px' #Controls for scroll frame
+            }   
         )#end table div
+    ]
+)
     
   
     
@@ -185,7 +202,7 @@ def update_map(filter_query):
         lon='longitude',
         mapbox_style='carto-positron',
         center=new_orleans_coordinates,
-        title='311 Code Enforcement Data 2012-Present',
+        title='new-orleans-map',
         zoom=10
     )
 
