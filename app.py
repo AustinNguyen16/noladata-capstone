@@ -128,7 +128,7 @@ html.Div(
             #tooltip specs
             tooltip_header={
             "final_address": "The address of the property",
-            "request_status": "[INSERT]",
+            "request_status": "311 request status of property",
             "objectid": "[INSERT]",
             "casefiled": "[INSERT]",
             "o_c": "Whether the case is open or closed",
@@ -144,8 +144,9 @@ html.Div(
            'height': '50vh',
            'textAlign': 'center',
            'display': 'flex',  # Ensures children are displayed as flex items
-            'flexDirection': 'column'}  # Ensures children are laid out vertically
-        )#end table and explain button div
+            'flexDirection': 'column',
+            'left': '25%'}  #This moves the table to the center 
+        )#end table div
     
   
     
