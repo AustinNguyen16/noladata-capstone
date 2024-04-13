@@ -62,7 +62,18 @@ data_cols = ['final_address',
 #Set data to our df from server
 data = df[data_cols]
 
+#Dictionary mapping to rename columns to more readable format 
+new_column_names = {
+    'final_address':'Address',
+    'request_status':'Request Status',
+    'objectid':'Object ID',
+    'casefiled':'Case Filed',
+    'o_c':'Open/Closed',
+    'latitude':'Latitude',
+    'longitude':'Longitude'
+}
 
+data = data.rename(columns=new_column_names)
 
 # Create a Dash web application
 app = dash.Dash(__name__)
@@ -76,8 +87,12 @@ columns_to_drop = ['geocoded_column', 'geoaddress']
 data_display = data #.drop(columns=columns_to_drop)
 
 
-quadrant_1_content = html.Div(
-    html.H1('Test 1')
+quadrant_1_content = html.Div(children=[
+    html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif',}),
+    html.P('This app unifies publicly available data to help users understand blighted properties in New Orleans.'),
+    html.H2('Quick Start Guide:'),
+    
+    ]
 )
 quadrant_2_content = html.Div(
 
@@ -88,8 +103,8 @@ quadrant_2_content = html.Div(
                 #Use df from database
                 data,
                 #Use Lat/Long in Data
-                lat = 'latitude',
-                lon = 'longitude',
+                lat = 'Latitude',
+                lon = 'Longitude',
 
                 #Find correct projection and zoom to display city of New Orleans
             
@@ -99,19 +114,20 @@ quadrant_2_content = html.Div(
                 center = new_orleans_coordinates,
 
                 #Title of data set being used
-                title='New Orleans Blighted Properties',
+                title='Map',
                 zoom = 10
                 #Hover Options
             
 
 
         ),
-        style={'width': '50vw', 
+        style={'width': '60vw', 
                'margin': '10px', 
                'marginTop': '0px', 
                'marginBottom':'0px', 
                'textAlign': 'center',
-               'padding-bottom': '0px'
+               'padding-bottom': '0px',
+               'left':'10%'
                }) #end graph
     ), #end map div
 
@@ -135,15 +151,21 @@ quadrant_4_content = html.Div(
                         filter_action='native',  # Set data filter to native dash type
                         filter_query='',  # Initial filter query
 
+                        style_cell_conditional=[  # Set width for specific columns
+                            {'if': {'column_id': 'Address'}, 'width': '30px'},
+       
+                            ],
+                        
+
                         #tooltip specs
                         tooltip_header={
-                        "final_address": "The address of the property",
-                        "request_status": "311 request status of property",
-                        "objectid": "[INSERT]",
-                        "casefiled": "[INSERT]",
-                        "o_c": "Whether the case is open or closed",
-                        "latitude": "the latitude coordinate of the property",
-                        "longitude": "the longitude coordinate of the property"
+                        "Address": "The address of the property",
+                        "Request Status": "311 request status of property",
+                        "Object ID": "[INSERT]",
+                        "Case Filed": "[INSERT]",
+                        "Open/Closed": "Whether the case is open or closed",
+                        "Latitude": "The latitude coordinate of the property",
+                        "Longitude": "The longitude coordinate of the property"
                     },
                     tooltip_duration=None
         ), #end table
@@ -156,7 +178,8 @@ quadrant_4_content = html.Div(
            'display': 'flex',  # Ensures children are displayed as flex items
             'flexDirection': 'column',
             'left': '0%', #This moves the table to the center
-            'display': 'inline-block', 'maxHeight': '250px', 'overflowY': 'scroll', 'paddingLeft': '20px' #Controls for scroll frame
+            'display': 'inline-block', 'maxHeight': '250px', 'overflowY': 'scroll', 'paddingLeft': '20px', #Controls for scroll frame
+            
             }   
         )#end table div
     ]
@@ -164,6 +187,10 @@ quadrant_4_content = html.Div(
 
 # Layout of the Dash app
 app.layout = html.Div(children=[
+
+    html.Div(
+            html.H1('Header test', style= {'font-family':' Georgia, serif'})
+        ),
 
     html.Div(
     style={
@@ -174,6 +201,7 @@ app.layout = html.Div(children=[
         'gap': '10px'                       # Gap between grid items
     },
     children=[
+        
         html.Div(quadrant_1_content, style={'gridColumn': '1', 'gridRow': '1'}),
         html.Div(quadrant_2_content, style={'gridColumn': '2', 'gridRow': '1'}),
         html.Div(quadrant_3_content, style={'gridColumn': '1', 'gridRow': '2'}),
