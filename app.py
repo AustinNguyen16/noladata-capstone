@@ -75,12 +75,12 @@ new_orleans_coordinates = {'lat': 29.9511, 'lon': -90.0715}
 columns_to_drop = ['geocoded_column', 'geoaddress']
 data_display = data #.drop(columns=columns_to_drop)
 
-# Layout of the Dash app
-app.layout = html.Div(children=[
 
+quadrant_1_content = html.Div(
+    html.H1('Test 1')
+)
+quadrant_2_content = html.Div(
 
-    # Map component using dcc.Graph
-    html.Div(
         dcc.Graph(
         #Set id
             id='new-orleans-map',
@@ -106,22 +106,19 @@ app.layout = html.Div(children=[
 
 
         ),
-        style={'width': '100%', 
+        style={'width': '50vw', 
                'margin': '10px', 
                'marginTop': '0px', 
                'marginBottom':'0px', 
                'textAlign': 'center',
                'padding-bottom': '0px'
                }) #end graph
-    ), #end graph div
+    ), #end map div
 
-    #Table Component
- 
-
-
-
-    #Create container div for table to place it inside of a scroll window
-    html.Div(
+quadrant_3_content = html.Div(
+    html.H1('Test 3')
+)
+quadrant_4_content = html.Div(
         style={'textAlign': 'center', 'left': '60%'},  # Center align content inside this div
         children=[
             html.Div(
@@ -153,7 +150,7 @@ app.layout = html.Div(children=[
         
     ],
     style={'position': 'relative', 
-           'width': '60%', 
+           'width': '50vw', 
            'height': '50vh',
            'textAlign': 'center',
            'display': 'flex',  # Ensures children are displayed as flex items
@@ -163,7 +160,29 @@ app.layout = html.Div(children=[
             }   
         )#end table div
     ]
+) #end table container div
+
+# Layout of the Dash app
+app.layout = html.Div(children=[
+
+    html.Div(
+    style={
+        'display': 'grid',
+        'gridTemplateColumns': '1fr 1fr',  # Two columns
+        'gridTemplateRows': '1fr 1fr',     # Two rows
+        'height': '100vh',                 # Full height of the viewport
+        'gap': '10px'                       # Gap between grid items
+    },
+    children=[
+        html.Div(quadrant_1_content, style={'gridColumn': '1', 'gridRow': '1'}),
+        html.Div(quadrant_2_content, style={'gridColumn': '2', 'gridRow': '1'}),
+        html.Div(quadrant_3_content, style={'gridColumn': '1', 'gridRow': '2'}),
+        html.Div(quadrant_4_content, style={'gridColumn': '2', 'gridRow': '2'})
+    ]
 )
+
+
+
     
   
     

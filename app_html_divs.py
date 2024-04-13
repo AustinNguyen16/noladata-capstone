@@ -1,32 +1,84 @@
 
 #MAP DIV
-html.Div([
-    # Map component using dcc.Graph
-    dcc.Graph(
+    html.Div(
+        dcc.Graph(
         #Set id
-        id='new-orleans-map',
-        figure=px.scatter_mapbox(
-            #Use 311 Data
-            data,
-            #Use Lat/Long in Data
-            lat = 'latitude',
-            lon = 'longitude',
+            id='new-orleans-map',
+            figure=px.scatter_mapbox(
+                #Use df from database
+                data,
+                #Use Lat/Long in Data
+                lat = 'latitude',
+                lon = 'longitude',
 
-            #Find correct projection and zoom to display city of New Orleans
+                #Find correct projection and zoom to display city of New Orleans
             
-            #?TO DO: Make this parameter toggalable by user to change map style
-            mapbox_style='carto-positron',
+                #?TO DO: Make this parameter toggalable by user to change map style
+                mapbox_style='carto-positron',
 
-            center = new_orleans_coordinates,
+                center = new_orleans_coordinates,
 
-            #Title of data set being used
-            title='311 Data 2012-Present',
-            zoom = 10
-            #Hover Options
+                #Title of data set being used
+                title='New Orleans Blighted Properties',
+                zoom = 10
+                #Hover Options
             
 
 
-        )
-    )
-], style={'width': '50%', 'margin': '300px', 'marginTop': '50px', 'textAlign': 'center'}
-)
+        ),
+        style={'width': '100%', 
+               'margin': '10px', 
+               'marginTop': '0px', 
+               'marginBottom':'0px', 
+               'textAlign': 'center',
+               'padding-bottom': '0px'
+               }) #end graph
+    ), #end map div
+
+
+
+#Table Container Div
+
+    html.Div(
+        style={'textAlign': 'center', 'left': '60%'},  # Center align content inside this div
+        children=[
+            html.Div(
+                          
+                children=[
+      
+
+                    #table component
+                    dash_table.DataTable(
+                        id='nola-blight-table',
+                        columns=[{'name': col, 'id': col} for col in data_display.columns],  # Define columns for the table
+                        data=data_display.to_dict('records'),  # Convert DataFrame to a format suitable for DataTable
+                        style_table={'width': '10%', 'marginTop': '10px'},  # Style for the table
+                        filter_action='native',  # Set data filter to native dash type
+                        filter_query='',  # Initial filter query
+
+                        #tooltip specs
+                        tooltip_header={
+                        "final_address": "The address of the property",
+                        "request_status": "311 request status of property",
+                        "objectid": "[INSERT]",
+                        "casefiled": "[INSERT]",
+                        "o_c": "Whether the case is open or closed",
+                        "latitude": "the latitude coordinate of the property",
+                        "longitude": "the longitude coordinate of the property"
+                    },
+                    tooltip_duration=None
+        ), #end table
+        
+    ],
+    style={'position': 'relative', 
+           'width': '60%', 
+           'height': '50vh',
+           'textAlign': 'center',
+           'display': 'flex',  # Ensures children are displayed as flex items
+            'flexDirection': 'column',
+            'left': '0%', #This moves the table to the center
+            'display': 'inline-block', 'maxHeight': '250px', 'overflowY': 'scroll', 'paddingLeft': '20px' #Controls for scroll frame
+            }   
+        )#end table div
+    ]
+) #end table container div
