@@ -91,7 +91,20 @@ quadrant_1_content = html.Div(children=[
     html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif',}),
     html.P('This app unifies publicly available data to help users understand blighted properties in New Orleans.'),
     html.H2('Quick Start Guide:'),
-    
+    html.Ul([
+        html.Li('Map tools will appear in the top-right when you hover over the map. Use the \'Box Select\' or'  +
+                ' the \'Lasso Select\' tool to highlight a specific area of the city. Double click to clear your selection.'),
+        html.Li('The table can also be used to filter the data. Search for a specific property or street name by typing'+
+                 ' in the \'filter data...\' box under the \'Address\' column header.' + 
+                 ' To reset the table, backspace the entry in \'filter data...\' and hit enter.'),
+        html.Li('You can also filter the other text columns by typing in the \'filter data...\' below the column header.' +
+                ' Numeric columns support direct search of values (i.e. -90.132), as well as the use of' +
+                ' greater than (>), less than (<), greater than or equal to (>=), and less than or equal to (<=).'),
+        html.Li('The table also supports multiple column filters at once, simply type the filter you want for each column in their respective'+ 
+                ' \'filter data...\' box, and the table will display all the properties that match the filtered qualities.')
+    ]
+        
+    )
     ]
 )
 quadrant_2_content = html.Div(
@@ -117,6 +130,7 @@ quadrant_2_content = html.Div(
                 title='Map',
                 zoom = 10
                 #Hover Options
+                #hover
             
 
 
@@ -165,7 +179,7 @@ quadrant_4_content = html.Div(
                         "Case Filed": "[INSERT]",
                         "Open/Closed": "Whether the case is open or closed",
                         "Latitude": "The latitude coordinate of the property",
-                        "Longitude": "The longitude coordinate of the property"
+                        "Longitude": "The longitude coordinate \n of the property"
                     },
                     tooltip_duration=None
         ), #end table
