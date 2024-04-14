@@ -128,9 +128,11 @@ quadrant_2_content = html.Div(
 
                 #Title of data set being used
                 title='Map',
-                zoom = 10
+                zoom = 10,
                 #Hover Options
-                #hover
+                #text = 'test',
+                hover_name= 'Address',
+                hover_data= {'Request Status':True, 'Object ID':True, 'Case Filed':True, 'Open/Closed':True,} #Controls columns that display on hover
             
 
 
