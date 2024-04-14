@@ -1,6 +1,6 @@
 #Imports
 import dash
-from dash import dcc, html, dash_table, Input, Output, State, callback
+from dash import dcc, html, dash_table, Input, Output, State, callback, callback_context
 import plotly.express as px
 import pandas as pd
 import mysql.connector
@@ -34,7 +34,7 @@ mycursor = connection.cursor()
 #Put database read in try/except block for safety
 
 try:
-    mycursor.execute("SELECT * FROM df_blight3")
+    mycursor.execute("SELECT * FROM blightdata")
     rows = mycursor.fetchall()
     columns = [desc[0] for desc in mycursor.description]
 
@@ -49,8 +49,10 @@ finally:
     print("End of try/except")
 
 
+
 #Reorder column names
 data_cols = ['final_address',
+             'data_source',
              'request_status',
              'objectid',
              'casefiled',
@@ -65,6 +67,7 @@ data = df[data_cols]
 #Dictionary mapping to rename columns to more readable format 
 new_column_names = {
     'final_address':'Address',
+    'data_source': 'Source',
     'request_status':'Request Status',
     'objectid':'Object ID',
     'casefiled':'Case Filed',
@@ -77,7 +80,7 @@ data = data.rename(columns=new_column_names)
 data = data.fillna('n/a')
 
 # Create a Dash web application
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=['/assets/styles.css'])
 
 #Global Vars
 #Coordinates of New Orleans to center map
@@ -88,26 +91,28 @@ columns_to_drop = ['geocoded_column', 'geoaddress']
 data_display = data #.drop(columns=columns_to_drop)
 
 
-quadrant_1_content = html.Div(children=[
-    html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif',}),
-    html.P('This app unifies publicly available data to help users understand blighted properties in New Orleans.'),
-    html.H2('Quick Start Guide:'),
-    html.Ul([
-        html.Li('Map tools will appear in the top-right when you hover over the map. Use the \'Box Select\' or'  +
-                ' the \'Lasso Select\' tool to highlight a specific area of the city. Double click to clear your selection.'),
-        html.Li('The table can also be used to filter the data. Search for a specific property or street name by typing'+
-                 ' in the \'filter data...\' box under the \'Address\' column header.' + 
-                 ' To reset the table, backspace the entry in \'filter data...\' and hit enter.'),
-        html.Li('You can also filter the other text columns by typing in the \'filter data...\' below the column header.' +
-                ' Numeric columns support direct search of values (i.e. -90.132), as well as the use of' +
-                ' greater than (>), less than (<), greater than or equal to (>=), and less than or equal to (<=).'),
-        html.Li('The table also supports multiple column filters at once, simply type the filter you want for each column in their respective'+ 
-                ' \'filter data...\' box, and the table will display all the properties that match the filtered qualities.')
-    ]
-        
-    )
+#Quick start modal
+quick_start_modal = html.Div(
+    id='quick-start-modal',
+    className='modal',
+    children=[
+        html.Div(
+            className='modal-content',
+            children=[
+                html.Span(className='close', id='quick-start-close', children='×'),
+                html.H2('Quick Start Guide'),
+                html.P('This is the quick start guide. Add your instructions here.')
+            ]
+        )
     ]
 )
+
+
+quadrant_1_content = html.Div(children=[
+    html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif',}),
+    html.P('This app unifies publicly available data to help users understand blighted properties in New Orleans.',
+           style= {'font-family':'Georgia, serif',})
+])
 quadrant_2_content = html.Div(
 
         dcc.Graph(
@@ -134,7 +139,8 @@ quadrant_2_content = html.Div(
                 #Hover Options
                 #text = 'test',
                 hover_name= 'Address',
-                hover_data= {'Request Status':True, 'Object ID':True, 'Case Filed':True, 'Open/Closed':True,} #Controls columns that display on hover
+                hover_data= {'Request Status':True, 'Source':True, 'Object ID':True, 'Case Filed':True, 
+                             'Open/Closed':True,} #Controls columns that display on hover
             
 
 
@@ -178,6 +184,7 @@ quadrant_4_content = html.Div(
                         #tooltip specs
                         tooltip_header={
                         "Address": "The address of the property",
+                        "Source": "The data source of the tracked property. Read more about the data sources in the \'About\' section.",
                         "Request Status": "311 request status of property",
                         "Object ID": "[INSERT]",
                         "Case Filed": "[INSERT]",
@@ -206,10 +213,17 @@ quadrant_4_content = html.Div(
 # Layout of the Dash app
 app.layout = html.Div(children=[
 
+    #Header div
     html.Div(
             html.H1('Header test', style= {'font-family':' Georgia, serif'})
         ),
 
+    #Quick Start modal div, commented out for now because it isn't working right
+    #html.Button('Open Quick Start Guide', id='quick-start-open'),
+    #quick_start_modal,
+
+
+    #4-quadrants div
     html.Div(
     style={
         'display': 'grid',
@@ -272,6 +286,21 @@ def update_map(filter_query):
     )
 
     return figure
+
+# Callback to toggle the display of the quick start guide modal
+@app.callback(
+    Output('quick-start-modal', 'style'),
+    [Input('quick-start-open', 'n_clicks'),
+     Input('quick-start-close', 'n_clicks')],
+    [State('quick-start-modal', 'style')]
+)
+def toggle_modal(open_clicks, close_clicks, style):
+    if open_clicks or close_clicks:
+        if 'none' in style.get('display', 'none'):
+            style['display'] = 'block'
+        else:
+            style['display'] = 'none'
+    return style
 
 
 
