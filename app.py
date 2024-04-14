@@ -74,6 +74,7 @@ new_column_names = {
 }
 
 data = data.rename(columns=new_column_names)
+data = data.fillna('n/a')
 
 # Create a Dash web application
 app = dash.Dash(__name__)
@@ -127,8 +128,9 @@ quadrant_2_content = html.Div(
                 center = new_orleans_coordinates,
 
                 #Title of data set being used
-                title='Map',
+                title='Tracked Properties',
                 zoom = 10,
+                
                 #Hover Options
                 #text = 'test',
                 hover_name= 'Address',
@@ -136,7 +138,7 @@ quadrant_2_content = html.Div(
             
 
 
-        ),
+        ).update_traces(marker_color='red', hoverlabel_bgcolor='black'), #update_traces edits the points and hover display
         style={'width': '60vw', 
                'margin': '10px', 
                'marginTop': '0px', 
