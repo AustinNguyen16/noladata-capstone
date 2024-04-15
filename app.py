@@ -108,10 +108,37 @@ quick_start_modal = html.Div(
 )
 
 #Quadrant 1 subquadrant divs
-subquadrant_1_content = html.Div(children=[html.H1('Test')])
-subquadrant_2_content = html.Div(children=[html.H1('Test')])
-subquadrant_3_content = html.Div(children=[html.H1('Test')])
-subquadrant_4_content = html.Div(children=[html.H1('Test')])
+total_observations = data.shape[0]
+subquadrant_1_content = html.Div(children=[
+    html.Img(src='/assets/house-png-193.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
+    html.H2('Total Properties Tracked'),
+    html.H2(f'{total_observations}')
+    ],
+    style={'text-align':'center'}
+    )
+
+pending_311_complaints = data[data["Request Status"] == "Pending"].shape[0]
+subquadrant_2_content = html.Div(children=[
+    html.Img(src='/assets/phone-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
+    html.H2('Pending 311 Complaints'),
+    html.H2(f'{pending_311_complaints}')
+    ],
+    style={'text-align':'center'}
+    )
+subquadrant_3_content = html.Div(children=[
+    html.Img(src='/assets/gavel-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
+    html.H2('Oldest Code Enforcement Cases'),
+    html.H2('[INSERT]')
+    ],
+    style={'text-align':'center'}
+    )
+subquadrant_4_content = html.Div(children=[
+    html.Img(src='/assets/broken-house-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
+    html.H2('Vacant Properties'),
+    html.H2('[INSERT]')
+    ],
+    style={'text-align':'center'}
+    )
 
 #Main quadrant divs
 quadrant_1_content = html.Div(children=[
