@@ -34,3 +34,9 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  /* CSS for the body */
+  body {
+    background-color: rgb(181, 189, 192); /* Set the desired background color */
+    margin: 0px
+}

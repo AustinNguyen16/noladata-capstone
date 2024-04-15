@@ -107,13 +107,37 @@ quick_start_modal = html.Div(
     ]
 )
 
+#Quadrant 1 subquadrant divs
+subquadrant_1_content = html.Div(children=[html.H1('Test')])
+subquadrant_2_content = html.Div(children=[html.H1('Test')])
+subquadrant_3_content = html.Div(children=[html.H1('Test')])
+subquadrant_4_content = html.Div(children=[html.H1('Test')])
 
+#Main quadrant divs
 quadrant_1_content = html.Div(children=[
-    html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif', 'color':'dark gray'}),
-    html.P('This app unifies publicly available data to help users understand blighted properties in New Orleans.',
-           style= {'font-family':'Georgia, serif',})
+    html.H2('Welcome to BlightWatch NOLA', style= {'font-family':'Georgia, serif', 'color':'black'}),
+    html.P('This app unifies publicly available 311 call, Code Enforcement, and USPS Vacancy data' + 
+           ' to help users track blighted properties in New Orleans. For more information about our sources,' +
+            ' click the \'Data Sources\' button in the menu bar. To get started, use our Quick Start Guide.',
+           style= {'font-family':'Georgia, serif', 'color':'black'}),
+    html.Div(
+    style={
+        'display': 'grid',
+        'gridTemplateColumns': '1fr 1fr',  # Two columns
+        'gridTemplateRows': '1fr 1fr',     # Two rows
+        'height': '50vh',                 # Full height of the viewport
+        'gap': '10px'                       # Gap between grid items
+    },
+    children=[
+        
+        html.Div(subquadrant_1_content, style={'gridColumn': '1', 'gridRow': '1'}),
+        html.Div(subquadrant_2_content, style={'gridColumn': '2', 'gridRow': '1'}),
+        html.Div(subquadrant_3_content, style={'gridColumn': '1', 'gridRow': '2'}),
+        html.Div(subquadrant_4_content, style={'gridColumn': '2', 'gridRow': '2'})
+    ]
+)
     ],
-    style={'backgroundColor':'gray'}
+    style={'paddingLeft':'10px'}
 )
 quadrant_2_content = html.Div(
 
@@ -148,13 +172,13 @@ quadrant_2_content = html.Div(
 
 
         ), 
-        style={'width': '60vw', 
+        style={'width': '50vw', 
                'margin': '10px', 
                'marginTop': '0px', 
                'marginBottom':'0px', 
                'textAlign': 'center',
                'padding-bottom': '0px',
-               'left':'10%',
+               'left':'15%',
                'backgroundColor':'gray'}) #end graph
     ), #end map div
 
@@ -207,11 +231,12 @@ quadrant_4_content = html.Div(
             'flexDirection': 'column',
             'left': '0%', #This moves the table to the center
             'display': 'inline-block', 'maxHeight': '250px', 'overflowY': 'scroll', 'paddingLeft': '20px', #Controls for scroll frame
-            'backgroundColor':'gray'
+            #'backgroundColor':'gray'
             }   
         )#end table div
     ]
 ) #end table container div
+
 
 # Layout of the Dash app
 app.layout = html.Div(children=[
@@ -227,7 +252,7 @@ app.layout = html.Div(children=[
             html.H4('About', style={'font-family':' Georgia, serif', 'color':'white', 'display':'inline-block',
                                            'margin-left':'20px'})
             ],
-            style={'backgroundColor':'black', 'padding':'3px', 'border':'1px', 'margin':'1px'}
+            style={'backgroundColor':'black', 'padding':'0px', 'border':'0px', 'margin':'0px'}
         ),
 
     #Quick Start modal div, commented out for now because it isn't working right
