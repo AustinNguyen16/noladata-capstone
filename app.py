@@ -70,7 +70,7 @@ new_column_names = {
     'data_source': 'Source',
     'request_status':'Request Status',
     'objectid':'Object ID',
-    'casefiled':'Case Filed',
+    'casefiled':'Case Filed Date',
     'o_c':'Open/Closed',
     'latitude':'Latitude',
     'longitude':'Longitude'
@@ -109,10 +109,12 @@ quick_start_modal = html.Div(
 
 
 quadrant_1_content = html.Div(children=[
-    html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif',}),
+    html.H2('Welcome to Blightwatch NOLA', style= {'font-family':'Georgia, serif', 'color':'dark gray'}),
     html.P('This app unifies publicly available data to help users understand blighted properties in New Orleans.',
            style= {'font-family':'Georgia, serif',})
-])
+    ],
+    style={'backgroundColor':'gray'}
+)
 quadrant_2_content = html.Div(
 
         dcc.Graph(
@@ -137,22 +139,23 @@ quadrant_2_content = html.Div(
                 zoom = 10,
                 
                 #Hover Options
-                #text = 'test',
+                color='Source',
+                color_discrete_map= {'311 Calls': 'blue', 'Code Enforcement': 'red'},
                 hover_name= 'Address',
-                hover_data= {'Request Status':True, 'Source':True, 'Object ID':True, 'Case Filed':True, 
+                hover_data= {'Request Status':True, 'Source':True, 'Object ID':True, 'Case Filed Date':True, 
                              'Open/Closed':True,} #Controls columns that display on hover
             
 
 
-        ).update_traces(marker_color='red', hoverlabel_bgcolor='black'), #update_traces edits the points and hover display
+        ), 
         style={'width': '60vw', 
                'margin': '10px', 
                'marginTop': '0px', 
                'marginBottom':'0px', 
                'textAlign': 'center',
                'padding-bottom': '0px',
-               'left':'10%'
-               }) #end graph
+               'left':'10%',
+               'backgroundColor':'gray'}) #end graph
     ), #end map div
 
 quadrant_3_content = html.Div(
@@ -186,9 +189,9 @@ quadrant_4_content = html.Div(
                         "Address": "The address of the property",
                         "Source": "The data source of the tracked property. Read more about the data sources in the \'About\' section.",
                         "Request Status": "311 request status of property",
-                        "Object ID": "[INSERT]",
-                        "Case Filed": "[INSERT]",
-                        "Open/Closed": "Whether the case is open or closed",
+                        "Object ID": "Code Enforcement: The case identification number",
+                        "Case Filed Date": "Code Enforcement: The date the case was filed",
+                        "Open/Closed": "Code Enforcement: Whether the case is open or closed",
                         "Latitude": "The latitude coordinate of the property",
                         "Longitude": "The longitude coordinate \n of the property"
                     },
@@ -204,7 +207,7 @@ quadrant_4_content = html.Div(
             'flexDirection': 'column',
             'left': '0%', #This moves the table to the center
             'display': 'inline-block', 'maxHeight': '250px', 'overflowY': 'scroll', 'paddingLeft': '20px', #Controls for scroll frame
-            
+            'backgroundColor':'gray'
             }   
         )#end table div
     ]
@@ -214,8 +217,17 @@ quadrant_4_content = html.Div(
 app.layout = html.Div(children=[
 
     #Header div
-    html.Div(
-            html.H1('Header test', style= {'font-family':' Georgia, serif'})
+    html.Div(children=[
+            html.H2('BlightWatch NOLA', style= {'font-family':' Georgia, serif', 'color':'white', 'display':'inline-block',
+                                                'margin-left':'2px'}),
+            html.H4('Home', style={'font-family':' Georgia, serif', 'color':'white', 'display':'inline-block',
+                                           'margin-left':'40px'}),
+            html.H4('Data Sources', style={'font-family':' Georgia, serif', 'color':'white', 'display':'inline-block',
+                                           'margin-left':'20px'}),
+            html.H4('About', style={'font-family':' Georgia, serif', 'color':'white', 'display':'inline-block',
+                                           'margin-left':'20px'})
+            ],
+            style={'backgroundColor':'black', 'padding':'3px', 'border':'1px', 'margin':'1px'}
         ),
 
     #Quick Start modal div, commented out for now because it isn't working right
