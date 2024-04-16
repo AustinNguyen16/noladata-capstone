@@ -111,33 +111,33 @@ quick_start_modal = html.Div(
 total_observations = data.shape[0]
 subquadrant_1_content = html.Div(children=[
     html.Img(src='/assets/house-png-193.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
-    html.H2('Total Properties Tracked'),
-    html.H2(f'{total_observations}')
+    html.H3('Total Properties Tracked'),
+    html.H3(f'{total_observations}')
     ],
-    style={'text-align':'center'}
+    style={'text-align':'center', 'border':'2px solid #000000', 'border-radius':'10px', 'padding-top':'20px'}
     )
 
 pending_311_complaints = data[data["Request Status"] == "Pending"].shape[0]
 subquadrant_2_content = html.Div(children=[
-    html.Img(src='/assets/phone-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
-    html.H2('Pending 311 Complaints'),
-    html.H2(f'{pending_311_complaints}')
+    html.Img(src='/assets/phone-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block', }),
+    html.H3('Pending 311 Complaints'),
+    html.H3(f'{pending_311_complaints}')
     ],
-    style={'text-align':'center'}
+    style={'text-align':'center', 'border':'2px solid #000000', 'border-radius':'10px', 'padding-top':'20px'}
     )
 subquadrant_3_content = html.Div(children=[
     html.Img(src='/assets/gavel-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
-    html.H2('Oldest Code Enforcement Cases'),
-    html.H2('[INSERT]')
+    html.H3('Oldest Code Enforcement Case'),
+    html.H3('3639 - 3641 Republic St (01/03/2014)')
     ],
-    style={'text-align':'center'}
+    style={'text-align':'center', 'border':'2px solid #000000', 'border-radius':'10px', 'padding-top':'20px'}
     )
 subquadrant_4_content = html.Div(children=[
     html.Img(src='/assets/broken-house-clipart.png', style= {'width':'10%', 'height':'10%', 'display':'inline-block'}),
-    html.H2('Vacant Properties'),
-    html.H2('[INSERT]')
+    html.H3('Vacant Properties'),
+    html.H3('242')
     ],
-    style={'text-align':'center'}
+    style={'text-align':'center', 'border':'2px solid #000000', 'border-radius':'10px', 'padding-top':'10px'}
     )
 
 #Main quadrant divs
@@ -152,7 +152,7 @@ quadrant_1_content = html.Div(children=[
         'display': 'grid',
         'gridTemplateColumns': '1fr 1fr',  # Two columns
         'gridTemplateRows': '1fr 1fr',     # Two rows
-        'height': '50vh',                 # Full height of the viewport
+        'height': '40vh',                 # Full height of the viewport
         'gap': '10px'                       # Gap between grid items
     },
     children=[
@@ -209,8 +209,24 @@ quadrant_2_content = html.Div(
                'backgroundColor':'gray'}) #end graph
     ), #end map div
 
-quadrant_3_content = html.Div(
-    html.H1('Test 3')
+source_counts = data.groupby('Source').size().reset_index(name='counts')
+fig = px.pie(source_counts, names='Source', values='counts', title='Pie Chart')
+fig.update_layout(title='Breakdown of Data Sources')
+fig.update_layout(plot_bgcolor='rgba(0,0,0,0)')
+quadrant_3_content = html.Div(children=[
+    #Add Pie Graph of 311 vs Code Enf
+    html.Div(
+        dcc.Graph(
+            id="pie-graph",
+            figure=fig,
+            
+
+            ),
+         #style={'background-color': 'LightSlateGray'}# Graph div Style
+    ),
+    
+    ],
+    style={'width':'45vw', 'height':'45vh', 'margin':'10px'} #Q3 Div style
 )
 quadrant_4_content = html.Div(
         style={'textAlign': 'center', 'left': '60%'},  # Center align content inside this div
@@ -370,4 +386,4 @@ def toggle_modal(open_clicks, close_clicks, style):
 
 # Run the app
 if __name__ == '__main__':
-    app.run_server(debug=True) 
+    app.run_server(debug=False) 
